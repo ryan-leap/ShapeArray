@@ -29,16 +29,16 @@ function Get-ShapeRectangle {
 
         [ValidateLength(1,115)]
         [Parameter(ParameterSetName='Embed',Mandatory=$true)]
-        [string] $EmbedText,
+        [string] $TextEmbed,
 
         [ValidateSet('Left','Right','Center')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $JustifyText = 'Left'
+        [string] $TextJustify = 'Left'
 
     )
 
-    if ($EmbedText) {
-        [int16] $centerFromTop = [math]::Round($Height / 2)
+    if ($TextEmbed) {
+        [int16] $centerFromTop = [math]::Ceiling($Height / 2)
     }
     # Top Margin
     for ($i = 0; $i -lt $MarginTop; $i++) {
@@ -47,13 +47,23 @@ function Get-ShapeRectangle {
 
     # Draw Shape
     (' ' * $MarginLeft) + $ShapeChar * $Width
-    for ($i = 1; $i -lt ($Height - 1); $i++) {
-        if ($EmbedText -and ($i -eq $centerFromTop)) {
-            switch ($JustifyText) {
-                'Left'   { (' ' * $MarginLeft) + $ShapeChar + ' ' + $EmbedText + (' ' * ($Width - $EmbedText.Length - 3)) + $ShapeChar }
-                'Right'  { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $EmbedText.Length - 3)) + $EmbedText + ' ' + $ShapeChar }
-                # 'Center' { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $EmbedText.Length - 3)) + $EmbedText + ' ' + $ShapeChar }
-                Default {}
+    for ($i = 0; $i -lt ($Height-2); $i++) {
+        if ($TextEmbed -and ($i -eq ($centerFromTop-2))) {
+            switch ($TextJustify) {
+                'Left'   { (' ' * $MarginLeft) + $ShapeChar + ' ' + $TextEmbed + (' ' * ($Width - $TextEmbed.Length - 3)) + $ShapeChar }
+                'Right'  { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + ' ' + $ShapeChar }
+                'Center' {
+                    $padding = (' ' * ([math]::Round(($Width - $TextEmbed.Length - 3)/2)))
+                    [int16] $remainder = $null
+                    $null = [math]::DivRem(($TextEmbed.Length),2,[ref]$remainder)
+                    if (-not($remainder)) {
+                        $paddingRight = $padding.Substring(0,$padding.Length-1)
+                    }
+                    else {
+                        $paddingRight = $padding
+                    }
+                    (' ' * $MarginLeft) + $ShapeChar + $padding + $TextEmbed + $paddingRight + ' ' + $ShapeChar
+                }
             }
             
         }
