@@ -1,15 +1,11 @@
 <#
    Add left padding and top padding
 #>
-function Get-ShapeArray {
+function Get-ShapeRectangle {
     param (
-        [ValidateSet('Circle','Rectangle')]
-        [Parameter(Mandatory = $false)]
-        [string] $Type = 'Rectangle',
-
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
-        [int16] $Height = 10,
+        [int16] $Height = 5,
 
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
@@ -32,7 +28,7 @@ function Get-ShapeArray {
 
     )
     for ($i = 0; $i -lt $MarginTop; $i++) {
-        [System.Environment]::NewLine
+        @(' ' * $Width)
     }
     if ($Type -eq 'Rectangle') {
         (' ' * $MarginLeft) + $ShapeChar * $Width
@@ -42,11 +38,11 @@ function Get-ShapeArray {
         (' ' * $MarginLeft) + $ShapeChar * $Width
     }
     for ($i = 0; $i -lt $MarginBottom; $i++) {
-        [System.Environment]::NewLine
+        @(' ' * $Width)
     }
 }
 
-function Join-ShapeArray {
+function Join-Shape {
     param (
         [array] $Left,
         [array] $Right,
