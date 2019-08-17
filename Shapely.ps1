@@ -24,19 +24,35 @@ function Get-ShapeRectangle {
         [int16] $MarginLeft = 0,
 
         [Parameter(Mandatory = $false)]
-        [string] $ShapeChar = '*'
+        [string] $ShapeChar = '*',
+
+        [ValidateLength(1,115)]
+        [Parameter(Mandatory = $false)]
+        [string] $EmbedText
 
     )
+
+    if ($EmbedText) {
+        [int16] $centerFromTop = [math]::Round($Height / 2)
+    }
+    # Top Margin
     for ($i = 0; $i -lt $MarginTop; $i++) {
         @(' ' * $Width)
     }
-    if ($Type -eq 'Rectangle') {
-        (' ' * $MarginLeft) + $ShapeChar * $Width
-        for ($i = 1; $i -lt ($Height - 1); $i++) {
+
+    # Draw Shape
+    (' ' * $MarginLeft) + $ShapeChar * $Width
+    for ($i = 1; $i -lt ($Height - 1); $i++) {
+        if ($EmbedText -and ($i -eq $centerFromTop)) {
+            (' ' * $MarginLeft) + $EmbedText + (' ' * ($Width - 2)) + $ShapeChar
+        }
+        else {
             (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - 2)) + $ShapeChar
         }
-        (' ' * $MarginLeft) + $ShapeChar * $Width
     }
+    (' ' * $MarginLeft) + $ShapeChar * $Width
+
+    # Bottom Margin
     for ($i = 0; $i -lt $MarginBottom; $i++) {
         @(' ' * $Width)
     }
@@ -48,7 +64,7 @@ function Join-Shape {
         [array] $Right,
         [int16] $Spacing = 1
     )
-    
+
     $biggerIndex = [Math]::Max($Left.count, $Right.Count)
     for ($i = 0; $i -lt $biggerIndex; $i++) {
         $Left[$i] + (' ' * $Spacing) + $Right[$i]
