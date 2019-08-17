@@ -2,6 +2,7 @@
    Add left padding and top padding
 #>
 function Get-ShapeRectangle {
+    [CmdletBinding(DefaultParameterSetName='Standard',PositionalBinding=$false)]
     param (
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
@@ -9,7 +10,7 @@ function Get-ShapeRectangle {
 
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
-        [int16] $Width = 10,
+        [int16] $Width = 50,
 
         [ValidateRange(0,120)]
         [Parameter(Mandatory = $false)]
@@ -27,8 +28,12 @@ function Get-ShapeRectangle {
         [string] $ShapeChar = '*',
 
         [ValidateLength(1,115)]
-        [Parameter(Mandatory = $false)]
-        [string] $EmbedText
+        [Parameter(ParameterSetName='Embed',Mandatory=$true)]
+        [string] $EmbedText,
+
+        [ValidateSet('Left','Right','Center')]
+        [Parameter(ParameterSetName='Embed',Mandatory=$false)]
+        [string] $JustifyText = 'Left'
 
     )
 
@@ -44,7 +49,12 @@ function Get-ShapeRectangle {
     (' ' * $MarginLeft) + $ShapeChar * $Width
     for ($i = 1; $i -lt ($Height - 1); $i++) {
         if ($EmbedText -and ($i -eq $centerFromTop)) {
-            (' ' * $MarginLeft) + $EmbedText + (' ' * ($Width - 2)) + $ShapeChar
+            switch ($JustifyText) {
+                'Left'  { (' ' * $MarginLeft) + $ShapeChar + ' ' + $EmbedText + (' ' * ($Width - $EmbedText.Length - 3)) + $ShapeChar }
+                'Right' { (' ' * $MarginLeft) + $ShapeChar + ' ' + (' ' * ($Width - $EmbedText.Length - 3)) + $EmbedText + $ShapeChar }
+                Default {}
+            }
+            
         }
         else {
             (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - 2)) + $ShapeChar
