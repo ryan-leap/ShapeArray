@@ -4,8 +4,8 @@
 function Get-ShapeArray {
     param (
         [ValidateSet('Circle','Rectangle')]
-        [Parameter(Mandatory = $true)]
-        [string] $Type,
+        [Parameter(Mandatory = $false)]
+        [string] $Type = 'Rectangle',
 
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
