@@ -51,7 +51,7 @@ function Get-ShapeRectangle {
         if ($EmbedText -and ($i -eq $centerFromTop)) {
             switch ($JustifyText) {
                 'Left'  { (' ' * $MarginLeft) + $ShapeChar + ' ' + $EmbedText + (' ' * ($Width - $EmbedText.Length - 3)) + $ShapeChar }
-                'Right' { (' ' * $MarginLeft) + $ShapeChar + ' ' + (' ' * ($Width - $EmbedText.Length - 3)) + $EmbedText + $ShapeChar }
+                'Right' { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $EmbedText.Length - 3)) + $EmbedText + ' ' + $ShapeChar }
                 Default {}
             }
             
