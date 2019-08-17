@@ -19,6 +19,10 @@ function Get-ShapeArray {
         [Parameter(Mandatory = $false)]
         [int16] $MarginTop = 0,
 
+        [ValidateRange(0,120)]
+        [Parameter(Mandatory = $false)]
+        [int16] $MarginBottom = 0,
+
         [ValidateRange(0,100)]
         [Parameter(Mandatory = $false)]
         [int16] $MarginLeft = 0,
@@ -27,12 +31,18 @@ function Get-ShapeArray {
         [string] $ShapeChar = '*'
 
     )
+    for ($i = 0; $i -lt $MarginTop; $i++) {
+        [System.Environment]::NewLine
+    }
     if ($Type -eq 'Rectangle') {
         (' ' * $MarginLeft) + $ShapeChar * $Width
         for ($i = 1; $i -lt ($Height - 1); $i++) {
             (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - 2)) + $ShapeChar
         }
         (' ' * $MarginLeft) + $ShapeChar * $Width
+    }
+    for ($i = 0; $i -lt $MarginBottom; $i++) {
+        [System.Environment]::NewLine
     }
 }
 
