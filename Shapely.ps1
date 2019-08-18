@@ -1,9 +1,37 @@
+function New-ShapeRectangle {
 <#
-   Add top, middle, bottom
-   Add fill character
+.SYNOPSIS
+  Produces an array that when displayed to the console is shaped like a rectangle.
+.DESCRIPTION
+  Creates an array whose arrangement of characters resembles a rectangle when displayed to the console.
+  Intended to be used for fun or displaying nicely formatted messages to an end user.
+.PARAMETER Height
+  Specifies the height (array count) of the rectangle.
+.PARAMETER Width
+  Specifies the width (string length) of the rectangle.
+.PARAMETER MarginTop
+  Specifies the number of blank lines above the rectangle.
+.PARAMETER MarginBottom
+  Specifies the number of blank lines below the rectangle.
+.PARAMETER MarginLeft
+  Specifies the number of blank columns to the left of the rectangle.
+.PARAMETER EdgeChar
+  Specifies the character to be used to draw the edges of the rectangle.
+.PARAMETER FillChar
+  Specifies the character to be used to fill the contents of the rectangle.
+.PARAMETER TextEmbed
+  Specifies a string to place inside the rectangle
+.PARAMETER AlignHorizontal
+  Specifies the horizontal alignment of the text embedded in the rectangle
+.PARAMETER AlignVertical
+  Specifies the vertical alignment of the text embedded in the rectangle
+.EXAMPLE
+  New-ShapeRectangle
+.NOTES
+   Author: Ryan Leap
+   Email: ryan.leap@gmail.com
 #>
-function Get-ShapeRectangle {
-    [CmdletBinding(DefaultParameterSetName='Standard',PositionalBinding=$false)]
+[CmdletBinding(DefaultParameterSetName='Standard',PositionalBinding=$false)]
     param (
         [ValidateRange(3,120)]
         [Parameter(Mandatory = $false)]
@@ -39,7 +67,12 @@ function Get-ShapeRectangle {
 
         [ValidateSet('Left','Right','Center')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $AlignVertical = 'Center'
+        [string] $AlignHorizontal = 'Center',
+
+        [ValidateSet('Top','Bottom','Middle')]
+        [Parameter(ParameterSetName='Embed',Mandatory=$false)]
+        [string] $AlignVertical = 'Middle'
+
 
     )
 
@@ -55,7 +88,7 @@ function Get-ShapeRectangle {
     (' ' * $MarginLeft) + $EdgeChar * $Width
     for ($i = 0; $i -lt ($Height-2); $i++) {
         if ($TextEmbed -and ($i -eq ($centerFromTop-2))) {
-            switch ($AlignVertical) {
+            switch ($AlignHorizontal) {
                 'Left'   { (' ' * $MarginLeft) + $EdgeChar + $FillChar + $TextEmbed + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $EdgeChar }
                 'Right'  { (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + $FillChar + $EdgeChar }
                 'Center' {
