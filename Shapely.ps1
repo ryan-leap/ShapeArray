@@ -101,6 +101,11 @@ function Join-Shape {
 
     $biggerIndex = [Math]::Max($Left.count, $Right.Count)
     for ($i = 0; $i -lt $biggerIndex; $i++) {
-        $Left[$i] + (' ' * $Spacing) + $Right[$i]
+        if ($i -ge $Left.Count) {
+            (' ' * $Left[0].Length) + (' ' * $Spacing) + $Right[$i]
+        }
+        else {
+            $Left[$i] + (' ' * $Spacing) + $Right[$i]
+        }
     }
 }
