@@ -54,19 +54,27 @@ function Get-ShapeRectangle {
                 'Right'  { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + ' ' + $ShapeChar }
                 'Center' {
                     [bool] $oddWidth = $Width % 2
+                    [bool] $oddTextLength = $TextEmbed.Length % 2
                     [int16] $insideShapeWidth = $Width - 2
                     $paddingTotal = $insideShapeWidth - $TextEmbed.Length
                     $paddingOnEachSide = [math]::Floor($paddingTotal /2)
-                    $paddingLeft = '-' * $paddingOnEachSide
+                    $paddingLeft = ' ' * $paddingOnEachSide
                     if ($oddWidth) {
-                        $paddingRight = '-' * ($paddingOnEachSide + 1)
+                        if ($oddTextLength) {
+                            $paddingRight = ' ' * $paddingOnEachSide
+                        }
+                        else {
+                            $paddingRight = ' ' * ($paddingOnEachSide + 1)
+                        }
                     }
                     else {
-                        $paddingRight = '-' * $paddingOnEachSide
+                        if ($oddTextLength) {
+                            $paddingRight = ' ' * ($paddingOnEachSide + 1)
+                        }
+                        else {
+                            $paddingRight = ' ' * $paddingOnEachSide
+                        }
                     }
-                    # $paddingLeft = ' ' * ([int16] ($paddingTotal / 2) + [math]::Abs($TextEmbed.Length % 2 - 1) + ($Width % 2))
-                    #$paddingLeft  = '-' * ((([int16] ($paddingTotal / 2)) + $Width % 2)) # + ($Width % 2))
-                    #$paddingRight = '-' * ((([int16] ($paddingTotal / 2)) + $Width % 2)) # + ($Width % 2))
                     (' ' * $MarginLeft) + $ShapeChar + $paddingLeft + $TextEmbed + $paddingRight + $ShapeChar
                 }
             }
