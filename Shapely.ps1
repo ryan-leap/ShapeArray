@@ -39,7 +39,7 @@ function Get-ShapeRectangle {
 
         [ValidateSet('Left','Right','Center')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $TextJustify = 'Center'
+        [string] $AlignVertical = 'Center'
 
     )
 
@@ -55,7 +55,7 @@ function Get-ShapeRectangle {
     (' ' * $MarginLeft) + $EdgeChar * $Width
     for ($i = 0; $i -lt ($Height-2); $i++) {
         if ($TextEmbed -and ($i -eq ($centerFromTop-2))) {
-            switch ($TextJustify) {
+            switch ($AlignVertical) {
                 'Left'   { (' ' * $MarginLeft) + $EdgeChar + $FillChar + $TextEmbed + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $EdgeChar }
                 'Right'  { (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + $FillChar + $EdgeChar }
                 'Center' {
