@@ -33,7 +33,7 @@ function Get-ShapeRectangle {
 
         [ValidateSet('Left','Right','Center')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $TextJustify = 'Left'
+        [string] $TextJustify = 'Center'
 
     )
 
