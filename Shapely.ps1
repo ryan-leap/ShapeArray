@@ -1,5 +1,6 @@
 <#
-   Add left padding and top padding
+   Add top, middle, bottom
+   Add fill character
 #>
 function Get-ShapeRectangle {
     [CmdletBinding(DefaultParameterSetName='Standard',PositionalBinding=$false)]
@@ -24,8 +25,13 @@ function Get-ShapeRectangle {
         [Parameter(Mandatory = $false)]
         [int16] $MarginLeft = 0,
 
+        [ValidateLength(1,1)]
         [Parameter(Mandatory = $false)]
-        [string] $ShapeChar = '*',
+        [string] $EdgeChar = '*',
+
+        [ValidateLength(1,1)]
+        [Parameter(Mandatory = $false)]
+        [string] $FillChar = ' ',
 
         [ValidateLength(1,115)]
         [Parameter(ParameterSetName='Embed',Mandatory=$true)]
@@ -46,45 +52,45 @@ function Get-ShapeRectangle {
     }
 
     # Draw Shape
-    (' ' * $MarginLeft) + $ShapeChar * $Width
+    (' ' * $MarginLeft) + $EdgeChar * $Width
     for ($i = 0; $i -lt ($Height-2); $i++) {
         if ($TextEmbed -and ($i -eq ($centerFromTop-2))) {
             switch ($TextJustify) {
-                'Left'   { (' ' * $MarginLeft) + $ShapeChar + ' ' + $TextEmbed + (' ' * ($Width - $TextEmbed.Length - 3)) + $ShapeChar }
-                'Right'  { (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + ' ' + $ShapeChar }
+                'Left'   { (' ' * $MarginLeft) + $EdgeChar + $FillChar + $TextEmbed + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $EdgeChar }
+                'Right'  { (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + $FillChar + $EdgeChar }
                 'Center' {
                     [bool] $oddWidth = $Width % 2
                     [bool] $oddTextLength = $TextEmbed.Length % 2
                     [int16] $insideShapeWidth = $Width - 2
                     $paddingTotal = $insideShapeWidth - $TextEmbed.Length
                     $paddingOnEachSide = [math]::Floor($paddingTotal /2)
-                    $paddingLeft = ' ' * $paddingOnEachSide
+                    $paddingLeft = $FillChar * $paddingOnEachSide
                     if ($oddWidth) {
                         if ($oddTextLength) {
-                            $paddingRight = ' ' * $paddingOnEachSide
+                            $paddingRight = $FillChar * $paddingOnEachSide
                         }
                         else {
-                            $paddingRight = ' ' * ($paddingOnEachSide + 1)
+                            $paddingRight = $FillChar * ($paddingOnEachSide + 1)
                         }
                     }
                     else {
                         if ($oddTextLength) {
-                            $paddingRight = ' ' * ($paddingOnEachSide + 1)
+                            $paddingRight = $FillChar * ($paddingOnEachSide + 1)
                         }
                         else {
-                            $paddingRight = ' ' * $paddingOnEachSide
+                            $paddingRight = $FillChar * $paddingOnEachSide
                         }
                     }
-                    (' ' * $MarginLeft) + $ShapeChar + $paddingLeft + $TextEmbed + $paddingRight + $ShapeChar
+                    (' ' * $MarginLeft) + $EdgeChar + $paddingLeft + $TextEmbed + $paddingRight + $EdgeChar
                 }
             }
             
         }
         else {
-            (' ' * $MarginLeft) + $ShapeChar + (' ' * ($Width - 2)) + $ShapeChar
+            (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - 2)) + $EdgeChar
         }
     }
-    (' ' * $MarginLeft) + $ShapeChar * $Width
+    (' ' * $MarginLeft) + $EdgeChar * $Width
 
     # Bottom Margin
     for ($i = 0; $i -lt $MarginBottom; $i++) {
