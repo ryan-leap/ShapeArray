@@ -56,6 +56,7 @@ PS C:\> $header = New-ShapeRectangle -Height 5 -TextEmbed "The Title"
 PS C:\> $body = New-ShapeRectangle -Height 10 -EdgeChar ' ' -TextEmbed "The Content"
 PS C:\> $footer = New-ShapeRectangle -Height 5 -TextEmbed "The End!"
 PS C:\> $header; $body; $footer
+
   *********************************************************************************************************
   *                                                                                                       *
   *                                               The Title                                               *
