@@ -82,7 +82,7 @@ PS C:\> $header; $body; $footer
   *                                                                                                       *
   *********************************************************************************************************
 ```
-### Combines two shape arrays into a single shape array
+### Combines shape arrays into a single shape array
 ```powershell
 PS C:\> Join-Shape -Left (New-ShapeRectangle -Width 20) -Right (New-ShapeRectangle -Width 50)
 
@@ -93,17 +93,24 @@ PS C:\> Join-Shape -Left (New-ShapeRectangle -Width 20) -Right (New-ShapeRectang
   *                  *   *                                                *
   ********************   **************************************************
 
-PS C:\> $box = New-ShapeRectangle -Height 5 -Width 10 -MarginLeft 0
+PS C:\> $box = New-ShapeRectangle -Height 5 -Width 10 -MarginLeft 0 -EdgeChar 'X' -FillChar 'O'
+PS C:\> $box
+
+XXXXXXXXXX
+XOOOOOOOOX
+XOOOOOOOOX
+XOOOOOOOOX
+XXXXXXXXXX
+
 PS C:\> $boxes = $box
 PS C:\> for ($i = 0; $i -lt 9; $i++) { $boxes = Join-Shape -Left $boxes -Right $box }
 PS C:\> $boxes
 
-********** ********** ********** ********** ********** ********** ********** ********** ********** **********
-*        * *        * *        * *        * *        * *        * *        * *        * *        * *        *
-*        * *        * *        * *        * *        * *        * *        * *        * *        * *        *
-*        * *        * *        * *        * *        * *        * *        * *        * *        * *        *
-********** ********** ********** ********** ********** ********** ********** ********** ********** **********
-
+XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX
+XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX
+XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX
+XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX XOOOOOOOOX
+XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX XXXXXXXXXX
 ```
 ## Author(s)
 
