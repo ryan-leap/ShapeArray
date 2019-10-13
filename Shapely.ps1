@@ -33,25 +33,25 @@ function New-ShapeRectangle {
 #>
 [CmdletBinding(DefaultParameterSetName='Standard',PositionalBinding=$false)]
     param (
-        [ValidateRange(3,120)]
+        [ValidateRange(3,5120)]
         [Parameter(Mandatory = $false)]
-        [int16] $Height = 5,
+        [int16] $Height = [math]::Floor($host.UI.RawUI.WindowSize.Height / 5),
 
-        [ValidateRange(3,120)]
+        [ValidateRange(3,5120)]
         [Parameter(Mandatory = $false)]
-        [int16] $Width = 50,
-
-        [ValidateRange(0,120)]
-        [Parameter(Mandatory = $false)]
-        [int16] $MarginTop = 0,
+        [int16] $Width = [math]::Floor($host.UI.RawUI.WindowSize.Width - 4),
 
         [ValidateRange(0,120)]
         [Parameter(Mandatory = $false)]
-        [int16] $MarginBottom = 0,
+        [int16] $MarginTop = 1,
+
+        [ValidateRange(0,120)]
+        [Parameter(Mandatory = $false)]
+        [int16] $MarginBottom = 1,
 
         [ValidateRange(0,100)]
         [Parameter(Mandatory = $false)]
-        [int16] $MarginLeft = 0,
+        [int16] $MarginLeft = 2,
 
         [ValidateLength(1,1)]
         [Parameter(Mandatory = $false)]
@@ -77,7 +77,11 @@ function New-ShapeRectangle {
     )
 
     if ($TextEmbed) {
-        [int16] $centerFromTop = [math]::Ceiling($Height / 2)
+      switch ($AlignVertical) {
+        'Top'    { [int16] $verticalAlignment = 1 }
+        'Bottom' { [int16] $verticalAlignment = $Height - 4 }
+        'Middle' { [int16] $verticalAlignment = ([math]::Ceiling($Height / 2)) - 2 }
+      }
     }
     # Top Margin
     for ($i = 0; $i -lt $MarginTop; $i++) {
@@ -87,7 +91,7 @@ function New-ShapeRectangle {
     # Draw Shape
     (' ' * $MarginLeft) + $EdgeChar * $Width
     for ($i = 0; $i -lt ($Height-2); $i++) {
-        if ($TextEmbed -and ($i -eq ($centerFromTop-2))) {
+        if ($TextEmbed -and ($i -eq $verticalAlignment)) {
             switch ($AlignHorizontal) {
                 'Left'   { (' ' * $MarginLeft) + $EdgeChar + $FillChar + $TextEmbed + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $EdgeChar }
                 'Right'  { (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + $FillChar + $EdgeChar }
