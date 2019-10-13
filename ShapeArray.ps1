@@ -26,7 +26,9 @@ function New-ShapeRectangle {
 .PARAMETER AlignVertical
   Specifies the vertical alignment of the text embedded in the rectangle
 .EXAMPLE
-  New-ShapeRectangle -TextEmbed "Hello World!"
+  New-ShapeRectangle -TextEmbed 'Hello World!'
+.EXAMPLE
+  New-ShapeRectangle -Height 10 -TextEmbed 'Hello World!' -TextAlignHorizontal Left -TextAlignVertical Bottom
 .NOTES
    Author: Ryan Leap
    Email: ryan.leap@gmail.com
@@ -72,8 +74,6 @@ function New-ShapeRectangle {
         [ValidateSet('Top','Bottom','Middle')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
         [string] $TextAlignVertical = 'Middle'
-
-
     )
 
     if ($TextEmbed) {
@@ -121,7 +121,6 @@ function New-ShapeRectangle {
                     (' ' * $MarginLeft) + $EdgeChar + $paddingLeft + $TextEmbed + $paddingRight + $EdgeChar
                 }
             }
-            
         }
         else {
             (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - 2)) + $EdgeChar
@@ -145,6 +144,8 @@ function Join-Shape {
   Specifies the shape that should be on the right side.
 .PARAMETER Spacing
   Specifies the amount of space that should be between the joined shapes.
+.Example
+  Join-Shape -Left (New-ShapeRectangle -Width 20) -Right (New-ShapeRectangle -Width 50)
 .NOTES
    Author: Ryan Leap
    Email: ryan.leap@gmail.com
