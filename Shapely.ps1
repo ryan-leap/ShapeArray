@@ -136,9 +136,24 @@ function New-ShapeRectangle {
 }
 
 function Join-Shape {
-    param (
+<#
+.SYNOPSIS
+  Combines two shape arrays into a single shape array
+.PARAMETER Left
+  Specifies the shape that should be on the left side.
+.PARAMETER Right
+  Specifies the shape that should be on the right side.
+.NOTES
+   Author: Ryan Leap
+   Email: ryan.leap@gmail.com
+#>
+param (
+        [Parameter(Mandatory = $true)]
         [array] $Left,
+
+        [Parameter(Mandatory = $true)]
         [array] $Right,
+
         [int16] $Spacing = 1
     )
 
