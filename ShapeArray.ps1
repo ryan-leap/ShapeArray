@@ -26,7 +26,7 @@ function New-ShapeRectangle {
 .PARAMETER AlignVertical
   Specifies the vertical alignment of the text embedded in the rectangle
 .EXAMPLE
-  New-ShapeRectangle
+  New-ShapeRectangle -TextEmbed "Hello World!"
 .NOTES
    Author: Ryan Leap
    Email: ryan.leap@gmail.com
@@ -67,17 +67,17 @@ function New-ShapeRectangle {
 
         [ValidateSet('Left','Right','Center')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $AlignHorizontal = 'Center',
+        [string] $TextAlignHorizontal = 'Center',
 
         [ValidateSet('Top','Bottom','Middle')]
         [Parameter(ParameterSetName='Embed',Mandatory=$false)]
-        [string] $AlignVertical = 'Middle'
+        [string] $TextAlignVertical = 'Middle'
 
 
     )
 
     if ($TextEmbed) {
-      switch ($AlignVertical) {
+      switch ($TextAlignVertical) {
         'Top'    { [int16] $verticalAlignment = 1 }
         'Bottom' { [int16] $verticalAlignment = $Height - 4 }
         'Middle' { [int16] $verticalAlignment = ([math]::Ceiling($Height / 2)) - 2 }
@@ -92,7 +92,7 @@ function New-ShapeRectangle {
     (' ' * $MarginLeft) + $EdgeChar * $Width
     for ($i = 0; $i -lt ($Height-2); $i++) {
         if ($TextEmbed -and ($i -eq $verticalAlignment)) {
-            switch ($AlignHorizontal) {
+            switch ($TextAlignHorizontal) {
                 'Left'   { (' ' * $MarginLeft) + $EdgeChar + $FillChar + $TextEmbed + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $EdgeChar }
                 'Right'  { (' ' * $MarginLeft) + $EdgeChar + ($FillChar * ($Width - $TextEmbed.Length - 3)) + $TextEmbed + $FillChar + $EdgeChar }
                 'Center' {
@@ -143,6 +143,8 @@ function Join-Shape {
   Specifies the shape that should be on the left side.
 .PARAMETER Right
   Specifies the shape that should be on the right side.
+.PARAMETER Spacing
+  Specifies the amount of space that should be between the joined shapes.
 .NOTES
    Author: Ryan Leap
    Email: ryan.leap@gmail.com
