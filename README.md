@@ -52,6 +52,34 @@ PS C:\> New-ShapeRectangle -Height 8 -TextEmbed 'Hello World!' -TextAlignHorizon
   *                                                                                                       *
   *********************************************************************************************************
 
+PS C:\> $header = New-ShapeRectangle -Height 5 -TextEmbed "The Title"
+PS C:\> $body = New-ShapeRectangle -Height 10 -EdgeChar ' ' -TextEmbed "The Content"
+PS C:\> $footer = New-ShapeRectangle -Height 5 -TextEmbed "The End!"
+PS C:\> $header; $body; $footer
+  *********************************************************************************************************
+  *                                                                                                       *
+  *                                               The Title                                               *
+  *                                                                                                       *
+  *********************************************************************************************************
+
+
+
+
+
+
+                                                 The Content
+
+
+
+
+
+
+
+  *********************************************************************************************************
+  *                                                                                                       *
+  *                                               The End!                                                *
+  *                                                                                                       *
+  *********************************************************************************************************
 ```
 ### Combines two shape arrays into a single shape array
 ```powershell
